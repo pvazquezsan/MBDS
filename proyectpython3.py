@@ -7,8 +7,8 @@ import virtualenv as virtualenv #para colgar en internet puntos extras
 import krakenex #conectar al servidor de kraken
 from pykrakenapi import KrakenAPI #conectar a la base de datos
 import plotly.graph_objects as go #graficos basketball
-import time #tiempo de intervalos de datos
-
+import time #tiempo para parar el codigo
+##DESCARGAR COLUMNA NOMBRE DE VARIABLES y decir por que las escogimos
 #ohlc DataFrame
 api = krakenex.API()
 k = KrakenAPI(api)
@@ -17,7 +17,7 @@ BCHUSD,last= k.get_ohlc_data("BCHUSD",interval=1440)# 60 min *24  horas. last es
 # si no lo descargamos se baja
 # todo como tupla
 BCHUSD=BCHUSD.reset_index()
-time.sleep(.9)
+time.sleep(.9) #api pedia esperar
 
 ZRXUSD,last= k.get_ohlc_data("ZRXUSD",interval=1440)#60 min *24  horas
 ZRXUSD=ZRXUSD.reset_index()
@@ -56,6 +56,7 @@ df_close = pd.DataFrame({
 
 fig = go.Figure()
 
+coins = ["ZRXUSD","BCHUSD","XZECZUSD"]
 for coin in coins:
     fig.add_trace(
         go.Candlestick(x=df_dtime[coin],
@@ -63,7 +64,7 @@ for coin in coins:
                        high=df_high[coin],
                        low=df_low[coin],
                        close=df_close[coin],
-                       name = coin)
+                       name = coin) #name para que aparezca en la leyenda el nombre de la moneda
     )
     fig.update_layout(
         updatemenus=[go.layout.Updatemenu(
